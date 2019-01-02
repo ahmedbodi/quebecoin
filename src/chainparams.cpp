@@ -86,7 +86,7 @@ public:
         consensus.nAveragingInterval = 10; // number of blocks to take the timespan of
 
         consensus.nStartAuxPow = 1402000; // Allow AuxPow blocks from this height
-        consensus.nAuxpowChainId = 0x005A; 
+        consensus.nAuxpowChainId = 0x005A;
         consensus.fStrictChainId = false;
 
         consensus.nBlockTimeWarpPreventStart1 = 740500; // block where time warp 1 prevention starts
@@ -97,7 +97,7 @@ public:
 
         consensus.nMaxAdjustDown = 4; // 4% adjustment down
         consensus.nMaxAdjustUpV1 = 2; // 2% adjustment up
-        consensus.nMaxAdjustUpV2 = 4; // 4% adjustment up     
+        consensus.nMaxAdjustUpV2 = 4; // 4% adjustment up
 
         consensus.nBlockSequentialAlgoRuleStart1 = 740000; // block where sequential algo rule starts
         consensus.nBlockSequentialAlgoRuleStart2 = 766000; // block where sequential algo rule starts
@@ -143,6 +143,11 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].bit = 5;
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].nStartTime = 1525132800; // May 1st, 2018
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].nTimeout = 1556668800; // May 1st, 2019
+
+        // Deployment of Argon2d (Argon2d4096 mining replacing Skein)
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].bit = 6;
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].nStartTime = 1550188800; // February 15th, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].nTimeout = 1581724800; // February 15th, 2020
 
         /*** Upstream Chainparams ***/
 
@@ -280,7 +285,7 @@ public:
         consensus.nAveragingInterval = 10; // number of blocks to take the timespan of
 
         consensus.nStartAuxPow = 150;
-        consensus.nAuxpowChainId = 0x005A; 
+        consensus.nAuxpowChainId = 0x005A;
         consensus.fStrictChainId = false;
 
         consensus.nBlockTimeWarpPreventStart1 = 1000; // block where time warp 1 prevention starts
@@ -291,7 +296,7 @@ public:
 
         consensus.nMaxAdjustDown = 4; // 4% adjustment down
         consensus.nMaxAdjustUpV1 = 2; // 2% adjustment up
-        consensus.nMaxAdjustUpV2 = 4; // 4% adjustment up     
+        consensus.nMaxAdjustUpV2 = 4; // 4% adjustment up
 
         consensus.nBlockSequentialAlgoRuleStart1 = 200; // block where sequential algo rule starts
         consensus.nBlockSequentialAlgoRuleStart2 = 250; // block where sequential algo rule starts
@@ -337,6 +342,11 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].bit = 5;
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].nStartTime = 1525132800; // May 1st, 2018
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].nTimeout = 1556668800; // May 1st, 2019
+
+        // Deployment of Argon2d (Argon2d4096 miniing replacing Skein)
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].bit = 6;
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].nStartTime = 1546300800; // January 1st, 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].nTimeout = 1577836800; // January 1st, 2020
 
         /*** Upstream Chainparams ***/
 
@@ -487,13 +497,18 @@ public:
 
         // Deployment of MIP2 (Reserve algorithm ids)
         consensus.vDeployments[Consensus::DEPLOYMENT_RESERVEALGO].bit = 4;
-        consensus.vDeployments[Consensus::DEPLOYMENT_RESERVEALGO].nStartTime = 0; 
+        consensus.vDeployments[Consensus::DEPLOYMENT_RESERVEALGO].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_RESERVEALGO].nTimeout = 999999999999ULL;
 
         // Deployment of MIP3 (longblocks)
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].bit = 5;
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_LONGBLOCKS].nTimeout = 999999999999ULL;
+
+        // Deployment of Argon2d (Argon2d4096 miniing replacing Skein)
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].bit = 6;
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_ARGON2D].nTimeout = 999999999999ULL;
 
         /*** Upstream Chainparams ***/
 

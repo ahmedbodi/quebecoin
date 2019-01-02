@@ -29,6 +29,10 @@ const struct VBDeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION_B
     {
         /*.name =*/ "longblocks",
         /*.gbt_force =*/ true,
+    },
+    {
+        /*.name =*/ "argon2d",
+        /*.gbt_force =*/ false,
     }
 };
 
