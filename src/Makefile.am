@@ -314,8 +314,21 @@ crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/yescrypt/sysendian.h \
   crypto/yescrypt/yescrypt.h \
   crypto/yescrypt/yescrypt-best.c \
-  crypto/yescrypt/yescryptcommon.c
-
+  crypto/yescrypt/yescryptcommon.c \
+  crypto/hashargon2d.h \
+  crypto/argon2/argon2.c \
+  crypto/argon2/argon2.h \
+  crypto/argon2/best.c \
+  crypto/argon2/blake2.h \
+  crypto/argon2/blake2b.c \
+  crypto/argon2/blake2-impl.h \
+  crypto/argon2/core.c \
+  crypto/argon2/core.h \
+  crypto/argon2/encoding.c \
+  crypto/argon2/encoding.h \
+  crypto/argon2/thread.c \
+  crypto/argon2/thread.h 
+  
 if USE_ASM
 crypto_libbitcoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
 endif
