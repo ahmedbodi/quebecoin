@@ -278,7 +278,7 @@ crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/sha256.h \
   crypto/sha512.cpp \
   crypto/sha512.h
-  
+
 if USE_ASM
 crypto_libbitcoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
 endif
@@ -368,7 +368,7 @@ libbitcoin_consensus_a_SOURCES = \
   crypto/argon2/encoding.c \
   crypto/argon2/encoding.h \
   crypto/argon2/thread.c \
-  crypto/argon2/thread.h 
+  crypto/argon2/thread.h
 
 # common: shared between bitcoind, and bitcoin-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
@@ -526,7 +526,9 @@ YESCRYPT_DIST += crypto/yescrypt/yescrypt-opt.c
 YESCRYPT_DIST += crypto/yescrypt/yescrypt-simd.c
 
 ARGON2D_DIST = crypto/argon2/ref.c
+ARGON2D_DIST += crypto/argon2/ref.h
 ARGON2D_DIST += crypto/argon2/opt.c
+ARGON2D_DIST += crypto/argon2/opt.h
 
 CLEANFILES = $(EXTRA_LIBRARIES)
 
