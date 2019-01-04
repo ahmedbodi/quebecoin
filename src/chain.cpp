@@ -372,13 +372,12 @@ arith_uint256 uint256_nthRoot(const int root, const arith_uint256 bn)
 arith_uint256 GetGeometricMeanPrevWork2(const CBlockIndex& block)
 {
     arith_uint256 bnRes;
-    //const arith_uint256 nNumAlgosImpl = arith_uint256(NUM_ALGOS_IMPL);
     arith_uint256 nBlockWork = GetBlockProofBase(block);
     int nAlgo = block.GetAlgo();
 
     // Compute the geometric mean
     // We use the nthRoot product rule: nthroot(a*b*...) = nthroot(a)*nthroot(b)*...
-    // This is so that we never overflow a uint256.
+    // We use the product rule to ensure we never overflow a uint256.
     nBlockWork = uint256_nthRoot(NUM_ALGOS, nBlockWork);
 
     for (int algo = 0; algo < NUM_ALGOS_IMPL; algo++)
