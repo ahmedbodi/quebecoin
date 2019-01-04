@@ -376,8 +376,9 @@ arith_uint256 GetGeometricMeanPrevWork2(const CBlockIndex& block)
     int nAlgo = block.GetAlgo();
 
     // Compute the geometric mean
-    // We use the nthRoot product rule: nthroot(a*b*...) = nthroot(a)*nthroot(b)*...
-    // We use the product rule to ensure we never overflow a uint256.
+    // We use the nthRoot product rule here:
+    //     nthRoot(a*b*...) = nthRoot(a)*nthRoot(b)*...
+    // This is to ensure we never overflow a uint256.
     nBlockWork = uint256_nthRoot(NUM_ALGOS, nBlockWork);
 
     for (int algo = 0; algo < NUM_ALGOS_IMPL; algo++)
@@ -386,10 +387,11 @@ arith_uint256 GetGeometricMeanPrevWork2(const CBlockIndex& block)
         {
             arith_uint256 nBlockWorkAlt = GetPrevWorkForAlgoWithDecay3(block, algo);
             if (nBlockWorkAlt != 0)
-                nBlockWork *= uint256_nthRoot(NUM_ALGOS,nBlockWorkAlt);
+                nBlockWork *= uint256_nthRoot(NUM_ALGOS,nBlockWorkAlt);  // Again, the nthRoot product rule.
         }
     }
-    // Compute the geometric mean
+    // In the past we have computed the geometric mean here,
+    // but do not need to from the nthRoot product rule above.
     bnRes = nBlockWork;
 
     // Scale to roughly match the old work calculation
