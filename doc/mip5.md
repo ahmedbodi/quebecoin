@@ -9,7 +9,7 @@ Remove openssl requirement (bignum.h).
 
 This MIP is introduced to remove the last openssl bignum requirement.
 
-Deployment of this rule is through the next consensus BIP9 fork.
+Deployment of this rule is through version bit 6.
 
 
 

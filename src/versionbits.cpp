@@ -32,7 +32,7 @@ const struct VBDeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION_B
     },
     {
         /*.name =*/ "argon2d",
-        /*.gbt_force =*/ false,
+        /*.gbt_force =*/ true,
     }
 };
 
