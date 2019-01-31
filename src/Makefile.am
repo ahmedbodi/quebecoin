@@ -260,7 +260,6 @@ libbitcoin_wallet_a_SOURCES = \
 # crypto primitives library
 crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
 crypto_libbitcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libbitcoin_crypto_a_CFLAGS = $(AM_CFLAGS) $(PIC_FLAGS)
 crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
@@ -278,7 +277,49 @@ crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/sha256.cpp \
   crypto/sha256.h \
   crypto/sha512.cpp \
-  crypto/sha512.h \
+  crypto/sha512.h
+
+if USE_ASM
+crypto_libbitcoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
+endif
+
+# consensus: shared between all executables that validate any consensus rules.
+libbitcoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libbitcoin_consensus_a_CFLAGS = $(AM_CFLAGS) $(PIC_FLAGS)
+libbitcoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libbitcoin_consensus_a_SOURCES = \
+  amount.h \
+  arith_uint256.cpp \
+  arith_uint256.h \
+  consensus/merkle.cpp \
+  consensus/merkle.h \
+  consensus/params.h \
+  consensus/validation.h \
+  hash.cpp \
+  hash.h \
+  prevector.h \
+  primitives/block.cpp \
+  primitives/block.h \
+  primitives/pureheader.cpp \
+  primitives/pureheader.h \
+  primitives/transaction.cpp \
+  primitives/transaction.h \
+  pubkey.cpp \
+  pubkey.h \
+  script/bitcoinconsensus.cpp \
+  script/interpreter.cpp \
+  script/interpreter.h \
+  script/script.cpp \
+  script/script.h \
+  script/script_error.cpp \
+  script/script_error.h \
+  serialize.h \
+  tinyformat.h \
+  uint256.cpp \
+  uint256.h \
+  utilstrencodings.cpp \
+  utilstrencodings.h \
+  version.h \
   crypto/hashgroestl.h \
   crypto/hashqubit.h \
   crypto/hashskein.h \
@@ -314,48 +355,20 @@ crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/yescrypt/sysendian.h \
   crypto/yescrypt/yescrypt.h \
   crypto/yescrypt/yescrypt-best.c \
-  crypto/yescrypt/yescryptcommon.c
-
-if USE_ASM
-crypto_libbitcoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
-endif
-
-# consensus: shared between all executables that validate any consensus rules.
-libbitcoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_consensus_a_SOURCES = \
-  amount.h \
-  arith_uint256.cpp \
-  arith_uint256.h \
-  consensus/merkle.cpp \
-  consensus/merkle.h \
-  consensus/params.h \
-  consensus/validation.h \
-  hash.cpp \
-  hash.h \
-  prevector.h \
-  primitives/block.cpp \
-  primitives/block.h \
-  primitives/pureheader.cpp \
-  primitives/pureheader.h \
-  primitives/transaction.cpp \
-  primitives/transaction.h \
-  pubkey.cpp \
-  pubkey.h \
-  script/bitcoinconsensus.cpp \
-  script/interpreter.cpp \
-  script/interpreter.h \
-  script/script.cpp \
-  script/script.h \
-  script/script_error.cpp \
-  script/script_error.h \
-  serialize.h \
-  tinyformat.h \
-  uint256.cpp \
-  uint256.h \
-  utilstrencodings.cpp \
-  utilstrencodings.h \
-  version.h
+  crypto/yescrypt/yescryptcommon.c \
+  crypto/hashargon2d.h \
+  crypto/argon2/argon2.c \
+  crypto/argon2/argon2.h \
+  crypto/argon2/best.c \
+  crypto/argon2/blake2.h \
+  crypto/argon2/blake2b.c \
+  crypto/argon2/blake2-impl.h \
+  crypto/argon2/core.c \
+  crypto/argon2/core.h \
+  crypto/argon2/encoding.c \
+  crypto/argon2/encoding.h \
+  crypto/argon2/thread.c \
+  crypto/argon2/thread.h
 
 # common: shared between bitcoind, and bitcoin-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
@@ -512,6 +525,13 @@ YESCRYPT_DIST = crypto/yescrypt/yescrypt-platform.c
 YESCRYPT_DIST += crypto/yescrypt/yescrypt-opt.c
 YESCRYPT_DIST += crypto/yescrypt/yescrypt-simd.c
 
+ARGON2D_DIST = crypto/argon2/ref.c
+ARGON2D_DIST += crypto/argon2/ref.h
+ARGON2D_DIST += crypto/argon2/opt.c
+ARGON2D_DIST += crypto/argon2/opt.h
+ARGON2D_DIST += crypto/argon2/blamka-round-opt.h
+ARGON2D_DIST += crypto/argon2/blamka-round-ref.h
+
 CLEANFILES = $(EXTRA_LIBRARIES)
 
 CLEANFILES += *.gcda *.gcno
@@ -528,7 +548,7 @@ CLEANFILES += wallet/test/*.gcda wallet/test/*.gcno
 CLEANFILES += zmq/*.gcda zmq/*.gcno
 CLEANFILES += obj/build.h
 
-EXTRA_DIST = $(CTAES_DIST) $(YESCRYPT_DIST)
+EXTRA_DIST = $(CTAES_DIST) $(YESCRYPT_DIST) $(ARGON2D_DIST)
 
 
 config/bitcoin-config.h: config/stamp-h1
