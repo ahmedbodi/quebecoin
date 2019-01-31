@@ -92,6 +92,7 @@ BOOST_AUTO_TEST_CASE(SimpleCheckAlgo)
     BOOST_CHECK_EQUAL(block.GetPoWHash(ALGO_SKEIN,Params().GetConsensus()).ToString() , "c938e0667fbca99c5d57374c9c517e5257801257123b521c72c836632a585859");
     BOOST_CHECK_EQUAL(block.GetPoWHash(ALGO_QUBIT,Params().GetConsensus()).ToString() , "8f8e107327fca43c9c191ba0c8a326106cc65fe98596362b12455bf510632cc2");
     BOOST_CHECK_EQUAL(block.GetPoWHash(ALGO_YESCRYPT,Params().GetConsensus()).ToString() , "1d31a0941db6e1d2ab7503a7026dadd0dc01d49d12e561ca574c7fd945d23a7b");
+    BOOST_CHECK_EQUAL(block.GetPoWHash(ALGO_ARGON2D,Params().GetConsensus()).ToString() , "956ee8ec3fb42aa627c7e70a1eeee88e399fcf5cec213c4c07aca1a51f0242a6");
 }
 
 BOOST_AUTO_TEST_CASE(SimpleRoundTripTest)
