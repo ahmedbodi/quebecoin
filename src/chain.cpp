@@ -414,14 +414,11 @@ arith_uint256 GetBlockProof(const CBlockIndex& block)
         // Myriadcoin MIP5/ARGON2D TODO: enable this for the next BIP9 consensus deployment.
         // In a later cleanup release, it should be possible to use GetGemetricPrevWork2 exclusively, thus
         // removing the need for 'bignum.h'.
-        /* This is the block of code to use once MIP5 is merged:
         if (VersionBitsState(pindex, params, Consensus::DEPLOYMENT_ARGON2D, versionbitscache) == THRESHOLD_ACTIVE) {
             bnTarget = GetGeometricMeanPrevWork2(block);
         } else {
             bnTarget = GetGeometricMeanPrevWork(block);
         }
-        */
-        bnTarget = GetGeometricMeanPrevWork(block);  // Remove this if MIP5 is merged.
     }
     else if (nHeight >= params.nBlockAlgoNormalisedWorkStart)
     {
