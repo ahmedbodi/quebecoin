@@ -214,7 +214,7 @@ public:
         vSeeds.emplace_back("seed6.myriadcoin.org");
         vSeeds.emplace_back("seed7.myriadcoin.org");
         vSeeds.emplace_back("seed8.myriadcoin.org");
-        vSeeds.emplace_back("myriadseed1.cryptap.us"); // cryptapus
+        vSeeds.emplace_back("myriadseed1.cryptapus.org"); // cryptapus
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,50);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,9);
@@ -399,7 +399,7 @@ public:
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("testseed1.myriadcoin.org");
-        vSeeds.emplace_back("myriadtestseed1.cryptap.us"); // cryptapus
+        vSeeds.emplace_back("myriadtestseed1.cryptapus.org"); // cryptapus
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,88);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,188);
