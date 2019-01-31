@@ -297,6 +297,109 @@ arith_uint256 GetGeometricMeanPrevWork(const CBlockIndex& block)
     return UintToArith256(bnRes.getuint256());
 }
 
+arith_uint256 uint256_nthRoot(const int root, const arith_uint256 bn)
+{
+    assert(root > 1);
+    if (bn==0)
+        return 0;
+    assert(bn > 0);
+
+    // starting approximation
+    int nRootBits = (bn.bits() + root - 1) / root;
+    int nStartingBits = std::min(8, nRootBits);
+    arith_uint256 bnUpper = bn;
+    bnUpper >>= (nRootBits - nStartingBits)*root;
+    arith_uint256 bnCur = 0;
+    for (int i = nStartingBits - 1; i >= 0; i--) {
+        arith_uint256 bnNext = bnCur;
+        bnNext += 1 << i;
+        arith_uint256 bnPower = 1;
+        for (int j = 0; j < root; j++)
+            bnPower *= bnNext;
+        if (bnPower <= bnUpper)
+            bnCur = bnNext;
+    }
+    if (nRootBits == nStartingBits)
+        return bnCur;
+    bnCur <<= nRootBits - nStartingBits;
+
+    // iterate: cur = cur + (bn / cur^^(root-1) - cur)/root
+    arith_uint256 bnDelta;
+    const arith_uint256 bnRoot = root;
+    int nTerminate = 0;
+    bool fNegativeDelta = false;
+    // this should always converge in fewer steps, but limit just in case
+    for (int it = 0; it < 20; it++)
+    {
+        arith_uint256 bnDenominator = 1;
+        for (int i = 0; i < root - 1; i++)
+            bnDenominator *= bnCur;
+        if (bnCur > bn/bnDenominator)
+            fNegativeDelta = true;
+        if (bnCur == bn/bnDenominator)  // bnDelta=0
+            return bnCur;
+        if (fNegativeDelta) {
+            bnDelta = bnCur - bn/bnDenominator;
+            if (nTerminate == 1)
+                return bnCur - 1;
+            fNegativeDelta = false;
+            if (bnDelta <= bnRoot) {
+                bnCur -= 1;
+                nTerminate = -1;
+                continue;
+            }
+            fNegativeDelta = true;
+        } else {
+            bnDelta = bn/bnDenominator - bnCur;
+            if (nTerminate == -1)
+                return bnCur;
+            if (bnDelta <= bnRoot) {
+                bnCur += 1;
+                nTerminate = 1;
+                continue;
+            }
+        }
+        if (fNegativeDelta) {
+            bnCur -= bnDelta / bnRoot;
+        } else {
+            bnCur += bnDelta / bnRoot;
+        }
+        nTerminate = 0;
+    }
+    return bnCur;
+}
+
+arith_uint256 GetGeometricMeanPrevWork2(const CBlockIndex& block)
+{
+    arith_uint256 bnRes;
+    arith_uint256 nBlockWork = GetBlockProofBase(block);
+    int nAlgo = block.GetAlgo();
+
+    // Compute the geometric mean
+    // We use the nthRoot product rule here:
+    //     nthRoot(a*b*...) = nthRoot(a)*nthRoot(b)*...
+    // This is to ensure we never overflow a uint256.
+    nBlockWork = uint256_nthRoot(NUM_ALGOS, nBlockWork);
+
+    for (int algo = 0; algo < NUM_ALGOS_IMPL; algo++)
+    {
+        if (algo != nAlgo)
+        {
+            arith_uint256 nBlockWorkAlt = GetPrevWorkForAlgoWithDecay3(block, algo);
+            if (nBlockWorkAlt != 0)
+                nBlockWork *= uint256_nthRoot(NUM_ALGOS,nBlockWorkAlt);  // Again, the nthRoot product rule.
+        }
+    }
+    // In the past we have computed the geometric mean here,
+    // but do not need to from the nthRoot product rule above.
+    bnRes = nBlockWork;
+
+    // Scale to roughly match the old work calculation
+    bnRes <<= 8;
+
+    return bnRes;
+}
+
 arith_uint256 GetBlockProof(const CBlockIndex& block)
 {
     Consensus::Params params = Params().GetConsensus();
@@ -304,10 +407,18 @@ arith_uint256 GetBlockProof(const CBlockIndex& block)
     arith_uint256 bnTarget;
     int nHeight = block.nHeight;
     int nAlgo = block.GetAlgo();
+    const CBlockIndex* pindex = &block;  // Myriadcoin MIP5/ARGON2D TODO: needed for VersionBitsState
     
     if (nHeight >= params.nGeoAvgWork_Start)
     {
-        bnTarget = GetGeometricMeanPrevWork(block);
+        // Myriadcoin MIP5/ARGON2D TODO: enable this for the next BIP9 consensus deployment.
+        // In a later cleanup release, it should be possible to use GetGemetricPrevWork2 exclusively, thus
+        // removing the need for 'bignum.h'.
+        if (VersionBitsState(pindex, params, Consensus::DEPLOYMENT_ARGON2D, versionbitscache) == THRESHOLD_ACTIVE) {
+            bnTarget = GetGeometricMeanPrevWork2(block);
+        } else {
+            bnTarget = GetGeometricMeanPrevWork(block);
+        }
     }
     else if (nHeight >= params.nBlockAlgoNormalisedWorkStart)
     {
