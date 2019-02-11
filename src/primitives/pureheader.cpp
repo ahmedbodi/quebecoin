@@ -11,6 +11,7 @@
 #include <crypto/hashskein.h>
 #include <crypto/scrypt/scrypt.h>
 #include <crypto/yescrypt/yescrypt.h>
+#include <crypto/hashargon2d.h>
 #include <utilstrencodings.h>
 
 uint256 CPureBlockHeader::GetHash() const
@@ -42,6 +43,8 @@ uint256 CPureBlockHeader::GetPoWHash(int algo, const Consensus::Params& consensu
             yescrypt_hash(BEGIN(nVersion), BEGIN(thash));
             return thash;
         }
+        case ALGO_ARGON2D:
+            return HashArgon2d(BEGIN(nVersion), END(nNonce));
     }
     return GetHash();
 }
@@ -69,6 +72,8 @@ int GetAlgo(int nVersion)
             return ALGO_QUBIT;
         case BLOCK_VERSION_YESCRYPT:
             return ALGO_YESCRYPT;
+        case BLOCK_VERSION_ARGON2D:
+            return ALGO_ARGON2D;
     }
     return ALGO_SHA256D;
 }
