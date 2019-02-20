@@ -19,6 +19,7 @@ enum {
     ALGO_SKEIN    = 3,
     ALGO_QUBIT    = 4,
     ALGO_YESCRYPT = 5,
+    ALGO_ARGON2D  = 6,
     NUM_ALGOS_IMPL
 };
 
@@ -36,6 +37,7 @@ enum
     BLOCK_VERSION_SKEIN          = (3 << 9),
     BLOCK_VERSION_QUBIT          = (4 << 9),
     BLOCK_VERSION_YESCRYPT       = (5 << 9),
+    BLOCK_VERSION_ARGON2D        = (6 << 9),
 };
 
 /** extract algo from nVersion */
@@ -102,7 +104,7 @@ public:
     uint256 GetHash() const;
 
     uint256 GetPoWHash(int algo, const Consensus::Params& consensusParams) const;
-    
+
     int64_t GetBlockTime() const
     {
         return (int64_t)nTime;
@@ -185,13 +187,13 @@ public:
     {
         return nVersion == 1;
     }
-    
+
     /** Extract algo from blockheader */
     inline int GetAlgo() const
     {
         return ::GetAlgo(nVersion);
     }
-    
+
     /** Encode the algorithm into nVersion */
     inline void SetAlgo(int algo)
     {
@@ -213,6 +215,9 @@ public:
                 break;
             case ALGO_YESCRYPT:
                 nVersion |= BLOCK_VERSION_YESCRYPT;
+                break;
+            case ALGO_ARGON2D:
+                nVersion |= BLOCK_VERSION_ARGON2D;
                 break;
             default:
                 break;

@@ -21,6 +21,7 @@ enum DeploymentPos
     DEPLOYMENT_LEGBIT, // Deployment of Legacy Bits.
     DEPLOYMENT_RESERVEALGO, // Deployment of MIP2 (Reserve algos)
     DEPLOYMENT_LONGBLOCKS, // Deployment of MIP3 (longblocks)
+    DEPLOYMENT_ARGON2D, // Deployment of Argon2d (Argon2d4096 mining replacing Skein)
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
     MAX_VERSION_BITS_DEPLOYMENTS
 };
