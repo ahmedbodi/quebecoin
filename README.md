@@ -73,13 +73,7 @@ not straightforward.
 Translations
 ------------
 
-Changes to translations as well as new translations can be submitted to
-[Myriadcoin Core's Transifex page](https://www.transifex.com/projects/p/myriadcoin/).
-
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
-
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+Changes to translations as well as new translations are typically handled upstream,
+[see bitcoin github](https://github.com/bitcoin/bitcoin/).
 
 Translators should also visit the [myriadcoin subreddit](https://www.reddit.com/r/myriadcoin).
