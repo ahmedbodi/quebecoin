@@ -111,6 +111,7 @@ public:
         consensus.nBlockAlgoNormalisedWorkDecayStart2 = 932000; // block where weight decay starts
         consensus.nGeoAvgWork_Start = 1400000;
         consensus.nFork1MinBlock = 1764000; // minimum block height where fork 1 takes effect (algo switch, seq algo count change)
+        consensus.nFork2MinBlock = 2772000; // minimum block height where fork 2 takes effect (algo switch, GetGeometricPrevWork2)
 
         consensus.MIP2Height = 2328480;
 
@@ -310,6 +311,7 @@ public:
         consensus.nBlockAlgoNormalisedWorkDecayStart2 = 0; // block where weight decay starts
         consensus.nGeoAvgWork_Start = 150;
         consensus.nFork1MinBlock = 601; // minimum block height where fork 1 takes effect (algo switch, seq algo count change)
+        consensus.nFork2MinBlock = 32256; // minimum block height where fork 2 takes effect (algo switch, GetGeometricPrevWork2)
 
         consensus.MIP2Height = 1;
 
@@ -474,6 +476,7 @@ public:
         consensus.nBlockAlgoNormalisedWorkDecayStart2 = 0; // block where weight decay starts
         consensus.nGeoAvgWork_Start = 0;
         consensus.nFork1MinBlock = 601; // minimum block height where fork 1 takes effect (algo switch, seq algo count change)
+        consensus.nFork2MinBlock = 32256; // minimum block height where fork 2 takes effect (algo switch, GetGeometricPrevWork2)
 
         consensus.MIP2Height = 1;
 

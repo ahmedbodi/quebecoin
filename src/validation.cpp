@@ -3282,9 +3282,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
     }
 
     // Check for algo switch 2 (Argon2d replacing Skein)
-    // Active when consensus reached via versionbits (bit 6)
-    // Myriadcoin TODO - hardcode with nHeight check once consensus reached and Argon2 mining is active.
-    bool bAlgoSwitch2 = (VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_ARGON2D, versionbitscache) == THRESHOLD_ACTIVE);
+    bool bAlgoSwitch2 = (nHeight >= consensusParams.nFork2MinBlock);
     if (bAlgoSwitch2)
     {
         if (algo == ALGO_SKEIN)
