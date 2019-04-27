@@ -6,7 +6,6 @@
 #include <chain.h>
 #include "chainparams.h"
 #include "validation.h"
-#include "bignum.h"
 
 /* Moved here from the header, because we need auxpow and the logic
    becomes more involved.  */
@@ -270,33 +269,6 @@ arith_uint256 GetPrevWorkForAlgoWithDecay3(const CBlockIndex& block, int algo)
     return arith_uint256(0);
 }
 
-arith_uint256 GetGeometricMeanPrevWork(const CBlockIndex& block)
-{
-    //arith_uint256 bnRes;
-    arith_uint256 nBlockWork = GetBlockProofBase(block);
-    CBigNum bnBlockWork = CBigNum(ArithToUint256(nBlockWork));
-    int nAlgo = block.GetAlgo();
-    
-    for (int algo = 0; algo < NUM_ALGOS_IMPL; algo++)
-    {
-        if (algo != nAlgo)
-        {
-            arith_uint256 nBlockWorkAlt = GetPrevWorkForAlgoWithDecay3(block, algo);
-            CBigNum bnBlockWorkAlt = CBigNum(ArithToUint256(nBlockWorkAlt));
-            if (bnBlockWorkAlt != 0)
-                bnBlockWork *= bnBlockWorkAlt;
-        }
-    }
-    // Compute the geometric mean
-    CBigNum bnRes = bnBlockWork.nthRoot(NUM_ALGOS);
-    
-    // Scale to roughly match the old work calculation
-    bnRes <<= 8;
-    
-    //return bnRes;
-    return UintToArith256(bnRes.getuint256());
-}
-
 arith_uint256 uint256_nthRoot(const int root, const arith_uint256 bn)
 {
     assert(root > 1);
@@ -369,7 +341,7 @@ arith_uint256 uint256_nthRoot(const int root, const arith_uint256 bn)
     return bnCur;
 }
 
-arith_uint256 GetGeometricMeanPrevWork2(const CBlockIndex& block)
+arith_uint256 GetGeometricMeanPrevWork(const CBlockIndex& block)
 {
     arith_uint256 bnRes;
     arith_uint256 nBlockWork = GetBlockProofBase(block);
@@ -407,18 +379,10 @@ arith_uint256 GetBlockProof(const CBlockIndex& block)
     arith_uint256 bnTarget;
     int nHeight = block.nHeight;
     int nAlgo = block.GetAlgo();
-    const CBlockIndex* pindex = &block;  // Myriadcoin MIP5/ARGON2D TODO: needed for VersionBitsState
     
     if (nHeight >= params.nGeoAvgWork_Start)
     {
-        // Myriadcoin MIP5/ARGON2D TODO: enable this for the next BIP9 consensus deployment.
-        // In a later cleanup release, it should be possible to use GetGemetricPrevWork2 exclusively, thus
-        // removing the need for 'bignum.h'.
-        if (VersionBitsState(pindex, params, Consensus::DEPLOYMENT_ARGON2D, versionbitscache) == THRESHOLD_ACTIVE) {
-            bnTarget = GetGeometricMeanPrevWork2(block);
-        } else {
-            bnTarget = GetGeometricMeanPrevWork(block);
-        }
+        bnTarget = GetGeometricMeanPrevWork(block);
     }
     else if (nHeight >= params.nBlockAlgoNormalisedWorkStart)
     {
