@@ -17,22 +17,6 @@ const struct VBDeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION_B
     {
         /*.name =*/ "segwit",
         /*.gbt_force =*/ true,
-    },
-    {
-        /*.name =*/ "legbit",
-        /*.gbt_force =*/ true,
-    },
-    {
-        /*.name =*/ "reservealgo",
-        /*.gbt_force =*/ true,
-    },
-    {
-        /*.name =*/ "longblocks",
-        /*.gbt_force =*/ true,
-    },
-    {
-        /*.name =*/ "argon2d",
-        /*.gbt_force =*/ true,
     }
 };
 

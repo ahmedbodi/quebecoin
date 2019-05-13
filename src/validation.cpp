@@ -1220,32 +1220,7 @@ bool ReadBlockHeaderFromDisk(CBlockHeader& block, const CBlockIndex* pindex, con
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
-    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
-    if (nHeight >= consensusParams.nLongblocks_StartV1a) {
-        halvings = consensusParams.nLongblocks_StartV1a / consensusParams.nSubsidyHalvingInterval;
-    }
-    if (nHeight >= consensusParams.nLongblocks_StartV1b) {
-        halvings += 1;
-    }
-    if (nHeight >= consensusParams.nLongblocks_StartV1c) {
-        halvings += 1;
-        halvings += ( nHeight - consensusParams.nLongblocks_StartV1c ) / consensusParams.nSubsidyHalvingIntervalV2c;
-    }
-    // Force block reward to 1 after 13 halvings (tail emission).
-    if (halvings >= 13) // tail emission happens later with longblocks.
-        return 1 * COIN;
-
-    CAmount nSubsidy = 1000 * COIN;
-    // longblocks require larger reward scaled for time.
-    if (nHeight >= consensusParams.nLongblocks_StartV1c) {
-        nSubsidy *= 8; // 1min -> 8min
-    } else if (nHeight >= consensusParams.nLongblocks_StartV1b) {
-        nSubsidy *= 4; // 1min -> 4min
-    } else if (nHeight >= consensusParams.nLongblocks_StartV1a) {
-        nSubsidy *= 2; // 1min -> 2min
-    }
-    // Subsidy is cut in half every 967680 blocks.
-    nSubsidy >>= halvings;
+    CAmount nSubsidy = 0.25 * COIN;
     return nSubsidy;
 }
 
@@ -1794,17 +1769,6 @@ int32_t ComputeBlockVersion(const CBlockIndex* pindexPrev, const Consensus::Para
         if (state == THRESHOLD_LOCKED_IN || state == THRESHOLD_STARTED) {
             nVersion |= VersionBitsMask(params, (Consensus::DeploymentPos)i);
         }
-    }
-
-    /* Myriadcoin: As a suspected consequence of `legbit` signaling longer than multiple BIP9 activation
-     * windows, artificially increase nVersion for the length of blocks legbit was active. bit 2 should still be
-     * usable as a BIP9 bit, however it is advisable that this behavior is verified on a testnet soft-fork for
-     * future use. This tweak of nVersion has been necessary on v0.14-v0.16 in order to not trigger a
-     * "Warning: unknown new rules activated (versionbit 2)" in UpdateTip().
-     */
-    if (pindexPrev!=NULL) {
-        if (pindexPrev->nHeight >= params.nLegbitStart && pindexPrev->nHeight < params.nLegbitStop)
-            nVersion += 4;
     }
 
     return nVersion;
@@ -3267,41 +3231,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
     if (block.GetBlockTime() > nAdjustedTime + MAX_FUTURE_BLOCK_TIME)
         return state.Invalid(false, REJECT_INVALID, "time-too-new", "block timestamp too far in the future");
 
-    // Check for algo switch 1
-    // Active when fork block reached
-    bool bAlgoSwitch1 = (nHeight >= consensusParams.nFork1MinBlock);
-    if (bAlgoSwitch1)
-    {
-        if (algo == ALGO_QUBIT)
-            return state.Invalid(false, REJECT_INVALID, "invalid-algo", "invalid QUBIT block");
-    }
-    else
-    {
-        if (algo == ALGO_YESCRYPT)
-            return state.Invalid(false, REJECT_INVALID, "invalid-algo", "invalid YESCRYPT block");
-    }
-
-    // Check for algo switch 2 (Argon2d replacing Skein)
-    bool bAlgoSwitch2 = (nHeight >= consensusParams.nFork2MinBlock);
-    if (bAlgoSwitch2)
-    {
-        if (algo == ALGO_SKEIN)
-            return state.Invalid(false, REJECT_INVALID, "invalid-algo", "invalid SKEIN block");
-    }
-    else
-    {
-        if (algo == ALGO_ARGON2D)
-            return state.Invalid(false, REJECT_INVALID, "invalid-algo", "invalid ARGON2D block");
-    }
-
-    // MIP2 (reservealgo) activated at MIP2Height
-    bool bMIP2 = (nHeight >= consensusParams.MIP2Height);
-    if (bMIP2)
-    {
-        if (algo >= NUM_ALGOS_IMPL)
-            return state.Invalid(false, REJECT_INVALID, "invalid-algo", "invalid algo id");
-    }
-
     // Reject outdated version blocks when 95% (75% on testnet) of the network has upgraded:
     // check for version 2, 3 and 4 upgrades
     if((block.nVersion < 2 && nHeight >= consensusParams.BIP34Height) ||
@@ -3435,37 +3364,27 @@ bool CChainState::AcceptBlockHeader(const CBlockHeader& block, CValidationState&
 
         // Check count of sequence of same algo
         int nHeight = pindexPrev->nHeight+1;
-        if (nHeight > chainparams.GetConsensus().nBlockSequentialAlgoRuleStart1)
+        int nAlgo = block.GetAlgo();
+        int nAlgoCount = 1;
+        CBlockIndex* piPrev = pindexPrev;
+
+        // Maximum sequence count allowed
+        int nMaxSeqCount = chainparams.GetConsensus().nBlockSequentialAlgoMaxCount;
+        while (piPrev!=NULL && (nAlgoCount <= nMaxSeqCount))
         {
-            int nAlgo = block.GetAlgo();
-            int nAlgoCount = 1;
-            CBlockIndex* piPrev = pindexPrev;
+            if (piPrev->GetAlgo() != nAlgo)
+                break;
+            nAlgoCount++;
+            piPrev = piPrev->pprev;
+        }
 
-            // Maximum sequence count allowed
-            int nMaxSeqCount;
-            if (nHeight > chainparams.GetConsensus().nFork1MinBlock)
-                nMaxSeqCount = chainparams.GetConsensus().nBlockSequentialAlgoMaxCount3;
-            else
-                if (nHeight > chainparams.GetConsensus().nBlockSequentialAlgoRuleStart2)
-                    nMaxSeqCount = chainparams.GetConsensus().nBlockSequentialAlgoMaxCount2;
-                    else
-                        nMaxSeqCount = chainparams.GetConsensus().nBlockSequentialAlgoMaxCount1;
-
-            while (piPrev!=NULL && (nAlgoCount <= nMaxSeqCount))
-            {
-                if (piPrev->GetAlgo() != nAlgo)
-                    break;
-                nAlgoCount++;
-                piPrev = piPrev->pprev;
-            }
-
-            LogPrint(BCLog::ALL,"SequentialAlgoRule DEBUG: nHeight: %d, nAlgoCount: %d, nMaxSeqCount: %d\n", nHeight, nAlgoCount, nMaxSeqCount);
-            if (nAlgoCount > nMaxSeqCount)
-            {
-                if (chainparams.MineBlocksOnDemand())
-                    LogPrintf("WARNING: REGTEST MODE ONLY: Max Algo count reached, but allowed with chainparams.MineBlocksOnDemand()\n");
-                    else
-                        return state.DoS(100, error("%s: too many blocks from same algo", __func__),REJECT_INVALID, "algo-toomany");
+        LogPrint(BCLog::ALL,"SequentialAlgoRule DEBUG: nHeight: %d, nAlgoCount: %d, nMaxSeqCount: %d\n", nHeight, nAlgoCount, nMaxSeqCount);
+        if (nAlgoCount > nMaxSeqCount)
+        {
+            if (chainparams.MineBlocksOnDemand()) {
+                LogPrintf("WARNING: REGTEST MODE ONLY: Max Algo count reached, but allowed with chainparams.MineBlocksOnDemand()\n");
+            } else {
+                return state.DoS(100, error("%s: too many blocks from same algo", __func__),REJECT_INVALID, "algo-toomany");
             }
         }
 

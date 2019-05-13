@@ -15,46 +15,8 @@ BOOST_FIXTURE_TEST_SUITE(main_tests, TestingSetup)
 
 static void TestBlockSubsidyHalvings(const Consensus::Params& consensusParams)
 {
-    int maxHalvings = 64;
-    CAmount nInitialSubsidy = 1000 * COIN;
-    CAmount nFinalSubsidy = 1 * COIN;
-
-    CAmount nPreviousSubsidy = nInitialSubsidy * 2; // for height == 0
-    BOOST_CHECK_EQUAL(nPreviousSubsidy, nInitialSubsidy * 2);
-    for (int nHalvings = 0; nHalvings < maxHalvings; nHalvings++) {
-        // Myriadcoin: nSubsidyHalvingInterval has been altered in 3 stages for MIP3-longblocks
-        //int nHeight = nHalvings * consensusParams.nSubsidyHalvingInterval;
-        int nHeight = 0;
-        if (nHalvings<=3) {
-            nHeight = nHalvings * consensusParams.nSubsidyHalvingInterval;
-        } else if (nHalvings==4) {
-            nHeight = 3 * consensusParams.nSubsidyHalvingInterval;
-            nHeight += consensusParams.nSubsidyHalvingIntervalV2a;
-        } else if (nHalvings==5) {
-            nHeight = 3 * consensusParams.nSubsidyHalvingInterval;
-            nHeight += consensusParams.nSubsidyHalvingIntervalV2a;
-            nHeight += consensusParams.nSubsidyHalvingIntervalV2b;
-        } else if (nHalvings>=6) {
-            nHeight = 3 * consensusParams.nSubsidyHalvingInterval;
-            nHeight += consensusParams.nSubsidyHalvingIntervalV2a;
-            nHeight += consensusParams.nSubsidyHalvingIntervalV2b;
-            nHeight += (nHalvings - 5) * consensusParams.nSubsidyHalvingIntervalV2c;
-        }
-        CAmount nSubsidy = GetBlockSubsidy(nHeight, consensusParams);
-        BOOST_CHECK(nSubsidy <= nInitialSubsidy);
-        if (nHalvings < 13) {
-            // Myriadcoin: nSubidy is held for block halvings 3-5 and block time increased for MIP3-longblocks
-            //BOOST_CHECK_EQUAL(nSubsidy, nPreviousSubsidy / 2);
-            if (nHalvings==3 || nHalvings==4 || nHalvings==5)
-                BOOST_CHECK_EQUAL(nSubsidy, nPreviousSubsidy);
-            else
-                BOOST_CHECK_EQUAL(nSubsidy, nPreviousSubsidy / 2);
-        } else {
-            BOOST_CHECK_EQUAL(nSubsidy, nFinalSubsidy);
-        }
-        nPreviousSubsidy = nSubsidy;
-    }
-    BOOST_CHECK_EQUAL(GetBlockSubsidy(maxHalvings * consensusParams.nSubsidyHalvingInterval, consensusParams), nFinalSubsidy);
+    CAmount nSubsidy = 0.25 * COIN;
+    BOOST_CHECK_EQUAL(GetBlockSubsidy(consensusParams.nSubsidyHalvingInterval, consensusParams), nSubsidy);
 }
 
 /* Myriadcoin: we don't test other intervals due to MIP3-longblocks

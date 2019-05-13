@@ -18,10 +18,6 @@ enum DeploymentPos
     DEPLOYMENT_TESTDUMMY,
     DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
     DEPLOYMENT_SEGWIT, // Deployment of BIP141, BIP143, and BIP147.
-    DEPLOYMENT_LEGBIT, // Deployment of Legacy Bits.
-    DEPLOYMENT_RESERVEALGO, // Deployment of MIP2 (Reserve algos)
-    DEPLOYMENT_LONGBLOCKS, // Deployment of MIP3 (longblocks)
-    DEPLOYMENT_ARGON2D, // Deployment of Argon2d (Argon2d4096 mining replacing Skein)
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
     MAX_VERSION_BITS_DEPLOYMENTS
 };
@@ -62,8 +58,8 @@ struct Params {
     int BIP65Height;
     /** Block height at which BIP66 becomes active */
     int BIP66Height;
-    /** Block height at which MIP2 becomes active */
-    int MIP2Height;
+    int nBlockSequentialAlgoMaxCount;
+
     /**
      * Minimum blocks including miner confirmation of the total of 2016 blocks in a retargeting period,
      * (nPowTargetTimespan / nPowTargetSpacing) which is also used for BIP9 deployments.
@@ -75,47 +71,16 @@ struct Params {
     /** Proof of work parameters */
     uint256 powLimit;
     bool fPowAllowMinDifficultyBlocks;
-    int64_t nPowTargetSpacingV1;
-    int64_t nPowTargetSpacingV2;
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
     int64_t nPowTargetTimespan;
-    int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacingV1; }
+    int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
     int64_t nAveragingInterval;
-    int64_t nBlockTimeWarpPreventStart1;
-    int64_t nBlockTimeWarpPreventStart2;
-    int64_t nBlockTimeWarpPreventStart3;
-    int64_t Phase2Timespan_Start;
-    int64_t nBlockDiffAdjustV2;
     int64_t nMaxAdjustDown;
-    int64_t nMaxAdjustUpV1;
-    int64_t nMaxAdjustUpV2;
-    int64_t nBlockSequentialAlgoRuleStart1;
-    int64_t nBlockSequentialAlgoRuleStart2;
-    int nBlockSequentialAlgoMaxCount1;
-    int nBlockSequentialAlgoMaxCount2;
-    int nBlockSequentialAlgoMaxCount3;
-    int64_t nBlockAlgoWorkWeightStart;
-    int64_t nBlockAlgoNormalisedWorkStart;
-    int64_t nBlockAlgoNormalisedWorkDecayStart1;
-    int64_t nBlockAlgoNormalisedWorkDecayStart2;
-    int64_t nGeoAvgWork_Start;
-    int64_t nFork1MinBlock;
-    int64_t nFork2MinBlock;
-    int64_t nPowTargetSpacingV3a;
-    int64_t nPowTargetSpacingV3b;
-    int64_t nPowTargetSpacingV3c;
-    int64_t nLongblocks_StartV1a;
-    int64_t nLongblocks_StartV1b;
-    int64_t nLongblocks_StartV1c;
-    int nSubsidyHalvingIntervalV2a;
-    int nSubsidyHalvingIntervalV2b;
-    int nSubsidyHalvingIntervalV2c;
-    int nLegbitStart;
-    int nLegbitStop;
-    
+    int64_t nMaxAdjustUp;
+
     /** Auxpow parameters */
     int32_t nAuxpowChainId;
     bool fStrictChainId;
