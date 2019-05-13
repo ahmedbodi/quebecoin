@@ -57,7 +57,7 @@ static CBlock BuildBlockTestCase() {
 
 BOOST_AUTO_TEST_CASE(SimpleCheckAlgo)
 {
-    // Myriadcoin, let's check our algos here:
+    // Quebecoin, let's check our algos here:
     CBlock block;
     CMutableTransaction tx;
     tx.vin.resize(1);

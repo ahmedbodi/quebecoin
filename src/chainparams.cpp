@@ -79,7 +79,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
 
-        /*** Myriadcoin Additional Chainparams ***/
+        /*** Quebecoin Additional Chainparams ***/
         consensus.nAveragingInterval = 10; // number of blocks to take the timespan of
 
         consensus.nStartAuxPow = 1; // Allow AuxPow blocks from this height
@@ -143,8 +143,8 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they dont support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        //vSeeds.emplace_back("seed1.myriadcoin.org");
-        //vSeeds.emplace_back("seed2.myriadcoin.org");
+        //vSeeds.emplace_back("seed1.quebecoin.org");
+        //vSeeds.emplace_back("seed2.quebecoin.org");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,58);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -240,7 +240,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testseed1.myriadcoin.org");
+        vSeeds.emplace_back("testseed1.quebecoin.org");
         vSeeds.emplace_back("myriadtestseed1.cryptapus.org"); // cryptapus
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,88);
@@ -284,7 +284,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
 
-        /*** Myriadcoin Additional Chainparams ***/
+        /*** Quebecoin Additional Chainparams ***/
         consensus.nAveragingInterval = 10; // number of blocks to take the timespan of
 
         consensus.nStartAuxPow = 150;

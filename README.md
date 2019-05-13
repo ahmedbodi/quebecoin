@@ -1,46 +1,46 @@
-Myriadcoin Core integration/staging tree
+Quebecoin Core integration/staging tree
 =====================================
 
-[![Build Status](https://travis-ci.com/myriadteam/myriadcoin.svg?branch=master)](https://travis-ci.com/myriadteam/myriadcoin)
+[![Build Status](https://travis-ci.com/myriadteam/quebecoin.svg?branch=master)](https://travis-ci.com/myriadteam/quebecoin)
 
-http://www.myriadcoin.org
+http://www.quebecoin.org
 
-What is Myriadcoin?
+What is Quebecoin?
 ----------------
 
-Myriadcoin is an experimental digital currency that enables instant payments to
-anyone, anywhere in the world. Myriadcoin uses peer-to-peer technology to operate
+Quebecoin is an experimental digital currency that enables instant payments to
+anyone, anywhere in the world. Quebecoin uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
-out collectively by the network. Myriadcoin Core is the name of open source
+out collectively by the network. Quebecoin Core is the name of open source
 software which enables the use of this currency.
 
 For more information, as well as an immediately usable, binary version of
-the Myriadcoin Core software, see http://www.myriadcoin.org, or read the
+the Quebecoin Core software, see http://www.quebecoin.org, or read the
 [original Bitcoin whitepaper](https://bitcoincore.org/bitcoin.pdf).
 
-Myriadcoin is distinct from Bitcoin in that it pioneered the use of multiple independent 
+Quebecoin is distinct from Bitcoin in that it pioneered the use of multiple independent 
 PoW algorithms on the same chain.
 
 License
 -------
 
-Myriadcoin is a fork of Bitcoin Core and inherits the terms of the MIT license. See 
+Quebecoin is a fork of Bitcoin Core and inherits the terms of the MIT license. See 
 [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
 
 Development Process
 -------------------
 
 The `master` branch is occasionally built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/myriadteam/myriadcoin/tags) are created
-regularly to indicate new official, stable release versions of Myriadcoin Core.
+completely stable. [Tags](https://github.com/myriadteam/quebecoin/tags) are created
+regularly to indicate new official, stable release versions of Quebecoin Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-The developer [subreddit](https://www.reddit.com/r/myriadcoin)
+The developer [subreddit](https://www.reddit.com/r/quebecoin)
 should be used to discuss complicated or controversial changes before working
 on a patch set.
 
-Developer IRC can be found on Freenode at ##myriadcoin.
+Developer IRC can be found on Freenode at ##quebecoin.
 
 Testing
 -------
@@ -76,4 +76,4 @@ Translations
 Changes to translations as well as new translations are typically handled upstream,
 [see bitcoin github](https://github.com/bitcoin/bitcoin/).
 
-Translators should also visit the [myriadcoin subreddit](https://www.reddit.com/r/myriadcoin).
+Translators should also visit the [quebecoin subreddit](https://www.reddit.com/r/quebecoin).

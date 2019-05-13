@@ -48,14 +48,14 @@
 #endif
 
 const int BITCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
-const QString BITCOIN_IPC_PREFIX("myriadcoin:");
+const QString BITCOIN_IPC_PREFIX("quebecoin:");
 // BIP70 payment protocol messages
 const char* BIP70_MESSAGE_PAYMENTACK = "PaymentACK";
 const char* BIP70_MESSAGE_PAYMENTREQUEST = "PaymentRequest";
 // BIP71 payment protocol media types
-const char* BIP71_MIMETYPE_PAYMENT = "application/myriadcoin-payment";
-const char* BIP71_MIMETYPE_PAYMENTACK = "application/myriadcoin-paymentack";
-const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/myriadcoin-paymentrequest";
+const char* BIP71_MIMETYPE_PAYMENT = "application/quebecoin-payment";
+const char* BIP71_MIMETYPE_PAYMENTACK = "application/quebecoin-paymentack";
+const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/quebecoin-paymentrequest";
 
 struct X509StoreDeleter {
       void operator()(X509_STORE* b) {
@@ -448,7 +448,7 @@ void PaymentServer::handleURIOrFile(const QString& s)
             }
             else
                 Q_EMIT message(tr("URI handling"),
-                    tr("URI cannot be parsed! This can be caused by an invalid Myriadcoin address or malformed URI parameters."),
+                    tr("URI cannot be parsed! This can be caused by an invalid Quebecoin address or malformed URI parameters."),
                     CClientUIInterface::ICON_WARNING);
 
             return;

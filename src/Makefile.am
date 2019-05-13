@@ -65,11 +65,11 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += myriadcoind
+  bin_PROGRAMS += quebecoind
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += myriadcoin-cli myriadcoin-tx
+  bin_PROGRAMS += quebecoin-cli quebecoin-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -431,17 +431,17 @@ libbitcoin_cli_a_SOURCES = \
 nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# myriadcoind binary #
-myriadcoind_SOURCES = bitcoind.cpp
-myriadcoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-myriadcoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-myriadcoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# quebecoind binary #
+quebecoind_SOURCES = bitcoind.cpp
+quebecoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+quebecoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+quebecoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-myriadcoind_SOURCES += bitcoind-res.rc
+quebecoind_SOURCES += bitcoind-res.rc
 endif
 
-myriadcoind_LDADD = \
+quebecoind_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBUNIVALUE) \
@@ -455,38 +455,38 @@ myriadcoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-myriadcoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+quebecoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# myriadcoin-cli binary #
-myriadcoin_cli_SOURCES = bitcoin-cli.cpp
-myriadcoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-myriadcoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-myriadcoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# quebecoin-cli binary #
+quebecoin_cli_SOURCES = bitcoin-cli.cpp
+quebecoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+quebecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+quebecoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-myriadcoin_cli_SOURCES += bitcoin-cli-res.rc
+quebecoin_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
-myriadcoin_cli_LDADD = \
+quebecoin_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-myriadcoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+quebecoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# myriadcoin-tx binary #
-myriadcoin_tx_SOURCES = bitcoin-tx.cpp
-myriadcoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-myriadcoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-myriadcoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# quebecoin-tx binary #
+quebecoin_tx_SOURCES = bitcoin-tx.cpp
+quebecoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+quebecoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+quebecoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-myriadcoin_tx_SOURCES += bitcoin-tx-res.rc
+quebecoin_tx_SOURCES += bitcoin-tx-res.rc
 endif
 
-myriadcoin_tx_LDADD = \
+quebecoin_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -494,7 +494,7 @@ myriadcoin_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-myriadcoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+quebecoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
 # bitcoinconsensus library #

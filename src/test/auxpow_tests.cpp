@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE (check_auxpow)
   builder2.parentBlock.SetChainId (100);
   BOOST_CHECK (builder2.get ().check (hashAux, ourChainId, params));
   builder2.parentBlock.SetChainId (ourChainId);
-  // Removed for Myriadcoin:
+  // Removed for Quebecoin:
   //BOOST_CHECK (!builder2.get ().check (hashAux, ourChainId, params));
 
   /* Disallow too long merkle branches.  */
@@ -377,7 +377,7 @@ BOOST_AUTO_TEST_CASE (auxpow_pow)
 
   block.nVersion = 2;
   mineBlock (block, true);
-  // Myriadcoin allows this:
+  // Quebecoin allows this:
   //BOOST_CHECK (!CheckProofOfWork (block, params));
   BOOST_CHECK (CheckProofOfWork (block, params));
 
@@ -387,7 +387,7 @@ BOOST_AUTO_TEST_CASE (auxpow_pow)
 
   block.SetChainId (params.nAuxpowChainId + 1);
   mineBlock (block, true);
-  // Myriadcoin allows this:
+  // Quebecoin allows this:
   //BOOST_CHECK (!CheckProofOfWork (block, params));
   BOOST_CHECK (CheckProofOfWork (block, params));
 
@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE (auxpow_pow)
   mineBlock (block, true);
   BOOST_CHECK (!CheckProofOfWork (block, params));
 
-  // TODO Myriadcoin disabled tests (does not function at v0.16.4.1 with removal of bignum.h):
+  // TODO Quebecoin disabled tests (does not function at v0.16.4.1 with removal of bignum.h):
   // This actually works, just not with `make check`. Needs further build investigation.
   //block.SetAuxpowVersion (true);
   //mineBlock (block, true);

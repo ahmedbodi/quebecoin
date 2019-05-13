@@ -1508,7 +1508,7 @@ void ThreadMapPort()
             }
         }
 
-        std::string strDesc = "Myriadcoin " + FormatFullVersion();
+        std::string strDesc = "Quebecoin " + FormatFullVersion();
 
         try {
             while (true) {

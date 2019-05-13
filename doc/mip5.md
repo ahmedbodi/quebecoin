@@ -15,4 +15,4 @@ Deployment of this rule is through version bit 6.
 
 Reference implementation
 
-https://github.com/cryptapus/bitcoin/tree/myriadcoin.master.mip5/
+https://github.com/cryptapus/bitcoin/tree/quebecoin.master.mip5/

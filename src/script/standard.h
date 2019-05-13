@@ -185,4 +185,6 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys);
  */
 CScript GetScriptForWitness(const CScript& redeemscript);
 
+CScript GetFoundationScript();
+
 #endif // BITCOIN_SCRIPT_STANDARD_H

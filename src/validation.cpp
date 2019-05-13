@@ -49,7 +49,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "Myriadcoin cannot be compiled without assertions."
+# error "Quebecoin cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -239,7 +239,7 @@ CTxMemPool mempool(&feeEstimator);
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "Myriadcoin Signed Message:\n";
+const std::string strMessageMagic = "Quebecoin Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -1082,7 +1082,7 @@ bool GetTransaction(const uint256& hash, CTransactionRef& txOut, const Consensus
 // CBlock and CBlockIndex
 //
 
-// Myriadcoin - check algo and auxpow
+// Quebecoin - check algo and auxpow
 bool CheckProofOfWork(const CBlockHeader& block, const Consensus::Params& params)
 {
     /* Except for legacy blocks with full version 1, ensure that
@@ -1221,6 +1221,8 @@ bool ReadBlockHeaderFromDisk(CBlockHeader& block, const CBlockIndex* pindex, con
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
     CAmount nSubsidy = 0.25 * COIN;
+    if (nHeight == 1)
+        nSubsidy = 2750000 * COIN;
     return nSubsidy;
 }
 
@@ -1956,7 +1958,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         }
     }
 
-    // Myriadcoin: always follow testnet checkpoints:
+    // Quebecoin: always follow testnet checkpoints:
     if (chainparams.NetworkIDString() == "test") {
         CBlockIndex* pcheckpoint = Checkpoints::GetLastCheckpoint(chainparams.Checkpoints());
         if (pindex->nHeight == pcheckpoint->nHeight && block.GetHash() != *pcheckpoint->phashBlock)
@@ -2053,6 +2055,13 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
+
+    if (block.vtx[0]->vout[1].scriptPubKey != GetFoundationScript())
+        return state.DoS(100, error("ConnectBlock() : coinbase does not pay to the dev in the second output)"));
+
+    if (block.vtx[0]->vout[1].nValue < blockReward / 2)
+        return state.DoS(100, error("ConnectBlock() : coinbase does not pay enough to the dev fee"));
+
 
     if (!control.Wait())
         return state.DoS(100, error("%s: CheckQueue failed", __func__), REJECT_INVALID, "block-validation-failed");
@@ -2255,7 +2264,7 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
         for (int i = 0; i < 100 && pindex != nullptr; i++)
         {
             int32_t nExpectedVersion = ComputeBlockVersion(pindex->pprev, chainParams.GetConsensus());
-            /* Myriadcoin: we only use the lowest 8 bits for BIP9, so we mask the chainid and algo (0x00FFFF00)*/
+            /* Quebecoin: we only use the lowest 8 bits for BIP9, so we mask the chainid and algo (0x00FFFF00)*/
             //if (pindex->nVersion > VERSIONBITS_LAST_OLD_BLOCK_VERSION && (pindex->nVersion & ~nExpectedVersion) != 0)
             if (pindex->nVersion > VERSIONBITS_LAST_OLD_BLOCK_VERSION && ((pindex->nVersion & ~nExpectedVersion) & 0xFF0000FF) != 0)
                 ++nUpgraded;

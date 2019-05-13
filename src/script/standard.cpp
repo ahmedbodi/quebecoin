@@ -5,6 +5,7 @@
 
 #include <script/standard.h>
 
+#include <base58.h>
 #include <pubkey.h>
 #include <script/script.h>
 #include <util.h>
@@ -361,3 +362,9 @@ CScript GetScriptForWitness(const CScript& redeemscript)
 bool IsValidDestination(const CTxDestination& dest) {
     return dest.which() != 0;
 }
+
+CScript GetFoundationScript() {
+    CTxDestination dest = DecodeDestination("QRBNgJAPgnn3Wq5wSo1dPndRktWPPpcudy");
+    return GetScriptForDestination(dest);
+}
+

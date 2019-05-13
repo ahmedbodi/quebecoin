@@ -7,17 +7,17 @@ define(_CLIENT_VERSION_BUILD, 1)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2018)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
-define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Myriadcoin Core]])
-AC_INIT([Myriadcoin Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/myriadteam/myriadcoin/issues],[myriadcoin],[http://www.myriadcoin.org/])
+define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Quebecoin Core]])
+AC_INIT([Quebecoin Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/myriadteam/quebecoin/issues],[quebecoin],[http://www.quebecoin.org/])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/bitcoin-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 
-BITCOIN_DAEMON_NAME=myriadcoind
-BITCOIN_GUI_NAME=myriadcoin-qt
-BITCOIN_CLI_NAME=myriadcoin-cli
-BITCOIN_TX_NAME=myriadcoin-tx
+BITCOIN_DAEMON_NAME=quebecoind
+BITCOIN_GUI_NAME=quebecoin-qt
+BITCOIN_CLI_NAME=quebecoin-cli
+BITCOIN_TX_NAME=quebecoin-tx
 
 dnl Unless the user specified ARFLAGS, force it to be cr
 AC_ARG_VAR(ARFLAGS, [Flags for the archiver, defaults to <cr> if not set])

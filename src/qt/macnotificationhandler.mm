@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"org.myriadcoin.Myriadcoin-Qt";
+        return @"org.quebecoin.Quebecoin-Qt";
     } else {
         return [self __bundleIdentifier];
     }
