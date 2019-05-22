@@ -96,7 +96,7 @@ public:
         consensus.BIP66Height = 100; // 2ca9968704301897b956f7e326375413be505509489c06aee2b16fe73805481e
         consensus.powLimit = ArithToUint256(~arith_uint256(0) >> 20);
         consensus.nPowTargetTimespan = 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 30; // Current value
+        consensus.nPowTargetSpacing = 20; // Current value
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% of 2016
