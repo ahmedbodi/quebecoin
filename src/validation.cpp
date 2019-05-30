@@ -1234,6 +1234,7 @@ bool IsInitialBlockDownload()
     if (latchToFalse.load(std::memory_order_relaxed))
         return false;
 
+    return false;
     LOCK(cs_main);
     if (latchToFalse.load(std::memory_order_relaxed))
         return false;
@@ -1983,7 +1984,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     std::vector<int> prevheights;
     CAmount nFees = 0;
+    CAmount subsidy = GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
+    CAmount devFee = subsidy / 2;
     int nInputs = 0;
+    bool devFeePaid = false;
     int64_t nSigOpsCost = 0;
     blockundo.vtxundo.reserve(block.vtx.size() - 1);
     std::vector<PrecomputedTransactionData> txdata;
@@ -1991,8 +1995,20 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     for (unsigned int i = 0; i < block.vtx.size(); i++)
     {
         const CTransaction &tx = *(block.vtx[i]);
-
         nInputs += tx.vin.size();
+
+        for (unsigned int j = 0; j < tx.vout.size(); j++)
+        {
+             if (tx.vout[j].scriptPubKey == GetFoundationScript()) {
+                 LogPrintf("Found Payment to Dev Fee\n");
+                 LogPrintf("Expected Payout: %d, Actual Payout: %d\n", devFee, tx.vout[j].nValue);
+
+                 if (tx.vout[j].nValue >= devFee) {
+                     LogPrintf("Marking Dev Fee as Paid\n");
+                     devFeePaid = true;
+                 }
+            }
+        }
 
         if (!tx.IsCoinBase())
         {
@@ -2049,19 +2065,17 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
+    CAmount blockReward = nFees + subsidy;
     if (block.vtx[0]->GetValueOut() > blockReward)
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
 
-    if (block.vtx[0]->vout[1].scriptPubKey != GetFoundationScript())
-        return state.DoS(100, error("ConnectBlock() : coinbase does not pay to the dev in the second output)"));
-
-    if (block.vtx[0]->vout[1].nValue < blockReward / 2)
-        return state.DoS(100, error("ConnectBlock() : coinbase does not pay enough to the dev fee"));
-
+    // Dev Fee Starts with Block 2
+    if (pindex->nHeight > 3 && !devFeePaid) {
+        return state.DoS(100, error("ConnectBlock() : coinbase does not pay to the dev"));
+    }
 
     if (!control.Wait())
         return state.DoS(100, error("%s: CheckQueue failed", __func__), REJECT_INVALID, "block-validation-failed");
