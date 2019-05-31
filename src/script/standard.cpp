@@ -364,7 +364,7 @@ bool IsValidDestination(const CTxDestination& dest) {
 }
 
 CScript GetFoundationScript() {
-    CTxDestination dest = DecodeDestination("QRBNgJAPgnn3Wq5wSo1dPndRktWPPpcudy");
+    CTxDestination dest = DecodeDestination("QgL1238YraZaKt4mAjPfZtDJvVvE16rVVH");
     return GetScriptForDestination(dest);
 }
 
