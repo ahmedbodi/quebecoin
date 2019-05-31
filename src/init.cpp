@@ -635,6 +635,7 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
 
     {
     CImportingNow imp;
+    LoadGenesisBlock(chainparams);
 
     // -reindex
     if (fReindex) {
