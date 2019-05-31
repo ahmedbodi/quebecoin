@@ -584,7 +584,7 @@ fs::path GetDefaultDataDir()
     // Unix: ~/.quebecoin
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Quebecoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "QuebecoinV2";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -594,10 +594,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Quebecoin";
+    return pathRet / "Library/Application Support/QuebecoinV2";
 #else
     // Unix
-    return pathRet / ".quebecoin";
+    return pathRet / ".quebecoinv2";
 #endif
 #endif
 }
