@@ -1234,7 +1234,6 @@ bool IsInitialBlockDownload()
     if (latchToFalse.load(std::memory_order_relaxed))
         return false;
 
-    return false;
     LOCK(cs_main);
     if (latchToFalse.load(std::memory_order_relaxed))
         return false;
