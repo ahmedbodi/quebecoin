@@ -67,7 +67,6 @@ script:
     - if [ -n "$OSX_SDK" ]; then ls -la; fi
     - if [ -n "$OSX_SDK" ]; then cp -rf Quebecoin-Core.dmg ${OUTDIR}; fi
     - if [ -n "$OSX_SDK" ]; then cp -rf Quebecoin-Qt.app ${OUTDIR}; fi
-    - ls -la ${OUTDIR}/bin
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
