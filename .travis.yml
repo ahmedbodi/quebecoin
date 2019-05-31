@@ -65,9 +65,19 @@ script:
     - make $MAKEJOBS $GOAL || ( echo "Build failure. Verbose build follows." && make $GOAL V=1 ; false )
     - export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/depends/$HOST/lib
     - if [ -n "$OSX_SDK" ]; then ls -la; fi
-    - if [ -n "$OSX_SDK" ]; then cp -rf Quebecoin-Core.dmg ${OUTDIR}/bin; fi
-    - if [ -n "$OSX_SDK" ]; then cp -rf Quebecoin-Qt.app ${OUTDIR}/bin; fi
+    - if [ -n "$OSX_SDK" ]; then cp -rf Quebecoin-Core.dmg ${OUTDIR}; fi
+    - if [ -n "$OSX_SDK" ]; then cp -rf Quebecoin-Qt.app ${OUTDIR}; fi
     - ls -la ${OUTDIR}/bin
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
+before_deploy: cd ${OUTDIR}/../ && tar -zcvf quebecoin-$HOST.tar.gz ${OUTDIR}
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: nJJxwJpPEO2Jg/wlvl4LDAro8r9C1wg5WrQLxGSgmbq+xcOLUTjfXZHXkYFF+mZIx43hZ1WjLHuVLGZjm92j00vLEaTsBWiw3cwUmaZA4C9UqtxF3FW2b0zqmCfh+bHlf0XWzEp65kLkWKLW+yuPQIQuxbq39J58CXU6r5vVY4empaYkMICFuTUfh2+6PaqdV7gIZrX2ZysvZg1cMCSWH/8gqm6nJ5Jm+rvAGkqy2KGe1OAe9y5REtwc+IbeVs58OA8bqlmuFNe4RPjUUgxWOyx85YfCdLSZeikoiI1X/9nD+4teh3nb2tJXNb0bFMFxeZwqUIH4cwlCHyAH8or2/jsSNPtTWY4W3yQRF/6XVNfTRCg98dcrHV3OGT3T+BvpxYzNSo18oV0oPnUBsAqE4hrhJf52ZXdBO4d7wcAnAUYKanxP7S1nXPO2wEfDVUeaRPx77nFh9l2WxZfbLf5jqcgyqvzfVXJ6JlfEUbooZXLV8aKiGxahJVIIPWhVLg0xbAbS+KStxO3W1GmTrz6OoveGxb5NkqsXoWm//lWAzn/d1N8cL/StIAHW7PR0B0Of4YCDHh0QeaE14M/zVVLgxfgHdN7ByGeZ+Go/+ySk8dzD/jXD4oDtasrXx+7m6Uc4kC0ajXDsusiOX2iSQ7JQYaBIoYFcUs6WBj/9pniK/ik=
+  file: ${OUTDIR}/../quebecoin-$HOST.tar.gz
+  on:
+    repo: ahmedbodi/quebecoin
+
