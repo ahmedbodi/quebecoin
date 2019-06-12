@@ -3,7 +3,7 @@ Quebecoin Core integration/staging tree
 
 [![Build Status](https://travis-ci.com/myriadteam/quebecoin.svg?branch=master)](https://travis-ci.com/myriadteam/quebecoin)
 
-http://www.quebecoin.org
+http://www.quebecoin.ca
 
 What is Quebecoin?
 ----------------
@@ -15,7 +15,7 @@ out collectively by the network. Quebecoin Core is the name of open source
 software which enables the use of this currency.
 
 For more information, as well as an immediately usable, binary version of
-the Quebecoin Core software, see http://www.quebecoin.org, or read the
+the Quebecoin Core software, see http://www.quebecoin.ca, or read the
 [original Bitcoin whitepaper](https://bitcoincore.org/bitcoin.pdf).
 
 Quebecoin is distinct from Bitcoin in that it pioneered the use of multiple independent 
