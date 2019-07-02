@@ -28,7 +28,7 @@ packages:
 - "python-setuptools"
 - "fonts-tuffy"
 remotes:
-- "url": "https://github.com/myriadteam/quebecoin.git"
+- "url": "https://github.com/QuebecoinQBC/quebecoin.git"
   "dir": "quebecoin"
 files:
 - "MacOSX10.11.sdk.tar.gz"
