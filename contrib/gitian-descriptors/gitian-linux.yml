@@ -28,7 +28,7 @@ packages:
 - "ca-certificates"
 - "python"
 remotes:
-- "url": "https://github.com/myriadteam/quebecoin.git"
+- "url": "https://github.com/QuebecoinQBC/quebecoin.git"
   "dir": "quebecoin"
 files: []
 script: |

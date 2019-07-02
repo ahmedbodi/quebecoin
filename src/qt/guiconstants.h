@@ -47,7 +47,7 @@ static const int MAX_URI_LENGTH = 255;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "Quebecoin"
-#define QAPP_ORG_DOMAIN "quebecoin.org"
+#define QAPP_ORG_DOMAIN "quebecoin.ca"
 #define QAPP_APP_NAME_DEFAULT "Quebecoin-Qt"
 #define QAPP_APP_NAME_TESTNET "Quebecoin-Qt-testnet"
 
