@@ -77,3 +77,7 @@ Changes to translations as well as new translations are typically handled upstre
 [see bitcoin github](https://github.com/bitcoin/bitcoin/).
 
 Translators should also visit the [quebecoin subreddit](https://www.reddit.com/r/quebecoin).
+
+# Authors
+----------
+- Ahmed Bodiwala
