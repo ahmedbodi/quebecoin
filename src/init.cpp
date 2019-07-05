@@ -526,8 +526,8 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/myriadteam/quebecoin>";
-    const std::string URL_WEBSITE = "<http://www.quebecoin.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/QuebecoinQBC/quebecoin>";
+    const std::string URL_WEBSITE = "<http://www.quebecoin.ca>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
