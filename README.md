@@ -3,7 +3,7 @@ Quebecoin Core integration/staging tree
 
 [![Build Status](https://travis-ci.com/myriadteam/quebecoin.svg?branch=master)](https://travis-ci.com/myriadteam/quebecoin)
 
-http://www.quebecoin.ca
+http://www.quebecoin.ca testing
 
 What is Quebecoin?
 ----------------
