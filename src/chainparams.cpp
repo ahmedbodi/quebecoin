@@ -230,7 +230,7 @@ public:
         pchMessageStart[1] = 0xf5;
         pchMessageStart[2] = 0x55;
         pchMessageStart[3] = 0xa4;
-        nDefaultPort = 20888;
+        nDefaultPort = 20889;
         nPruneAfterHeight = 1000;
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
