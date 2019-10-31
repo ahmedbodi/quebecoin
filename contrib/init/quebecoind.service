@@ -5,19 +5,19 @@
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/bitcoin/bitcoin.conf
+# /etc/quebecoin/quebecoin.conf
 
 [Unit]
-Description=Bitcoin daemon
+Description=Quebecoin daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/bitcoind -daemon -conf=/etc/bitcoin/bitcoin.conf -pid=/run/bitcoind/bitcoind.pid
-# Creates /run/bitcoind owned by bitcoin
-RuntimeDirectory=bitcoind
-User=bitcoin
+ExecStart=/usr/bin/quebecoind -daemon -conf=/etc/quebecoin/quebecoin.conf -pid=/run/quebecoind/quebecoind.pid
+# Creates /run/quebecoind owned by quebecoin
+RuntimeDirectory=quebecoind
+User=quebecoin
 Type=forking
-PIDFile=/run/bitcoind/bitcoind.pid
+PIDFile=/run/quebecoind/quebecoind.pid
 Restart=on-failure
 PrivateTmp=true
 
