@@ -71,8 +71,7 @@ void CChainParams::UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64
  * + Is surrounded by blocks with reasonable timestamps
  *   (no blocks before with a timestamp after, none after with
  *    timestamp before)
- * + Contains no strange transactions
- */
+ * + Contains no strange transactions*
 
 class CMainParams : public CChainParams {
 public:
